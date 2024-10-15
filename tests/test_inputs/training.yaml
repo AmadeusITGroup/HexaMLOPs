@@ -1,0 +1,36 @@
+inputs:
+  - name: data_config
+    type: uri_file
+    path: ../src/download_data/config_AF_new.yaml
+  - name: train_config
+    type: uri_file
+    path: ../src/train/config_GBT.yaml
+
+steps: # PIPELINE:
+  - name: download_data # step name, same name as the folder name in src
+    inputs:
+    # data_config: parameter of the py script
+    # parent.inputs.data_config: value of the parameter
+      - data_config: parent.inputs.data_config
+     
+    outputs:
+    # if the folder is not defined, leave the value empty
+      - data_folder: 
+
+  - name : data_prep
+    inputs:
+      - json_folder: download_data.outputs.data_folder
+    outputs:
+      - output_folder: 
+        mode: upload
+ 
+    # extra variable like compute, environment, etc (if not define, assume using declared training environment and compute)
+  - name: train
+    inputs:
+      - config: parent.inputs.train_config
+      - input: data_prep.outputs.output_folder
+    outputs:
+      - output:
+
+
+      

@@ -1,0 +1,14 @@
+resource_group: hexa_rg
+workspace_name: hexa_ws
+location: westeurope
+
+inference:
+  scoring_script_path: TST/scr/score/score.py
+  endpoint_type: batch
+  endpoint_name: my_dummy_online_endpoint
+  deployment_name: my_dummy_online_deployment
+  model: azureml:my_dummy_model:1
+  compute_name: dummy
+  instance_count: 1
+  environment_name: h2o_env
+  environment_version: 3

@@ -1,0 +1,6 @@
+$schema: https://azuremlschemas.azureedge.net/latest/pipelineComponentBatchDeployment.schema.json
+type: pipeline
+component: pipeline_no_value.yaml
+settings:
+  continue_on_step_failure: false
+  default_compute: demo-compute
