@@ -1,0 +1,45 @@
+$schema: https://azuremlschemas.azureedge.net/latest/pipelineJob.schema.json
+type: pipeline
+experiment_name: ahp_mlops
+inputs:
+  data_config:
+    path: ../src/download_data/config_AF_new.yaml
+    type: uri_file
+  train_config:
+    path: ../src/train/config_GBT.yaml
+    type: uri_file
+jobs:
+  download_data:
+    code: ../src/download_data/
+    command: python download_data.py --data_config ${{inputs.data_config}} --data_folder
+      ${{outputs.data_folder}}
+    compute: azureml:demo-compute
+    environment: azureml:h2o_env:3
+    inputs:
+      data_config: ${{parent.inputs.data_config}}
+    outputs:
+      data_folder: {}
+    type: command
+  data_prep:
+    code: ../src/data_prep/
+    command: python data_prep.py --json_folder ${{inputs.json_folder}} --output_folder
+      ${{outputs.output_folder}}
+    compute: azureml:demo-compute
+    environment: azureml:h2o_env:3
+    inputs:
+      json_folder: ${{parent.jobs.download_data.outputs.data_folder}}
+    outputs:
+      output_folder: {}
+    type: command
+  train:
+    code: ../src/train/
+    command: python train.py --config ${{inputs.config}} --input ${{inputs.input}}
+      --output ${{outputs.output}}
+    compute: azureml:demo-compute
+    environment: azureml:h2o_env:3
+    inputs:
+      config: ${{parent.inputs.train_config}}
+      input: ${{parent.jobs.data_prep.outputs.output_folder}}
+    outputs:
+      output: {}
+    type: command

@@ -1,0 +1,7 @@
+inputs:
+  data_config:
+    path: ../src/download_data/config_AF_new.yaml
+    type: uri_file
+  train_config:
+    path: ../src/train/config_GBT.yaml
+    type: uri_file
