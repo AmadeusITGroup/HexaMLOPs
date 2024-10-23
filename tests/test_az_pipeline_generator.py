@@ -3,6 +3,7 @@ import logging
 import yaml
 import os
 import sys
+import json
 sys.path.append(os.path.join(os.path.dirname(__file__), '..', 'src'))
 from hexa_mlops.azureml.azure_pipeline_file_generator import AzPipelineFileGenerator
 
@@ -27,115 +28,124 @@ class TestPipelineGenerator(unittest.TestCase):
         self.generator_w_value.generate()
         with open(self.pipeline_file , 'r') as file:
             result = yaml.safe_load(file)
-        expected = {
-            '$schema': 'https://azuremlschemas.azureedge.net/latest/pipelineJob.schema.json',
-            'type': 'pipeline',
-            'experiment_name': 'ahp_mlops',
-            'inputs': {
-                 'data_config': {
-                     'path': '../src/download_data/config_AF_new.yaml',
-                    'type': 'uri_file'
-                    },
-                'train_config': {
-                    'path': '../src/train/config_GBT.yaml',
-                    'type': 'uri_file'
+        self.assertEqual(result["display_name"], "Primitive Training")
+        self.assertEqual(result["experiment_name"], "ahp_mlops")
+        self.assertEqual(
+            result["jobs"]["prep"],
+            {
+                'code': '../src/prep/',
+                'command': 'python prep.py --data_folder ${{inputs.data_folder}} --some_number ${{inputs.some_number}} --some_string ${{inputs.some_string}} --prep_data ${{outputs.prep_data}}',
+                'compute': 'azureml:demo-compute',
+                'environment': 'azureml:h2o_env:3',
+                'inputs': {
+                    'data_folder': 
+                        {"path": "azureml://datastores/workspaceblobstore/paths/UI/2024-10-06_150541_UTC/office_data/paris", "type": "uri_folder"},
+                    'some_number': 3,
+                    'some_string':'paris'
+            },
+                'outputs': {
+                        'prep_data': {'mode': 'upload', 'path': 'azureml://datastores/workspaceblobstore/paths/dynamic_params/office/prep_data','type': 'uri_folder'}
+            },
+                'type': 'command'
                     }
+        )
+        self.assertEqual(
+            result["jobs"]["transform"],
+            {
+                'code': '../src/transform/',
+                'command': 'python transform.py --clean_data ${{inputs.clean_data}} --transformed_data ${{outputs.transformed_data}}',
+                'compute': 'azureml:demo-compute',
+                'environment': 'azureml:h2o_env:3',
+                'inputs': {'clean_data': '${{parent.jobs.prep.outputs.prep_data}}'},
+                'outputs': {'transformed_data': None},
+                'type': 'command'
+            }
+        )
+        self.assertEqual(
+            result["jobs"]["train"],
+            {
+                'code': '../src/train/',
+                'command': 'python train.py --training_data ${{inputs.training_data}} --model_output ${{outputs.model_output}} --test_data ${{outputs.test_data}}',
+                'compute': 'azureml:demo-compute',
+                'environment': 'azureml:h2o_env:3',
+                'inputs': {
+                    'training_data': '${{parent.jobs.transform.outputs.transformed_data}}',
                     },
-            'jobs': {
-                'download_data': {
-                    'code': '../src/download_data/',
-                    'command': 'python download_data.py --data_config ${{inputs.data_config}} --data_folder ${{outputs.data_folder}}',
-                    'compute': 'azureml:demo-compute',
-                    'environment': 'azureml:h2o_env:3',
-                    'inputs': {'data_config': '${{parent.inputs.data_config}}'},
-                    'outputs': {'data_folder': {}},
-                    'type': 'command'
-                    },
-                'data_prep': {
-                    'code': '../src/data_prep/',
-                    'command': 'python data_prep.py --json_folder ${{inputs.json_folder}} --output_folder ${{outputs.output_folder}}',
-                    'compute': 'azureml:demo-compute',
-                    'environment': 'azureml:h2o_env:3',
-                    'inputs': {'json_folder': '${{parent.jobs.download_data.outputs.data_folder}}'},
-                    'outputs': {'output_folder': {}},
-                    'type': 'command'},
-                'train': {
-                    'code': '../src/train/',
-                    'command': 'python train.py --config ${{inputs.config}} --input ${{inputs.input}} --output ${{outputs.output}}',
-                    'compute': 'azureml:demo-compute',
-                    'environment': 'azureml:h2o_env:3',
-                    'inputs': {
-                        'config': '${{parent.inputs.train_config}}',
-                        'input': '${{parent.jobs.data_prep.outputs.output_folder}}'
-                        },
-                    'outputs': {'output': {}},
-                    'type': 'command'}}
-                    }
-        self.assertEqual(result, expected)
+                'outputs': {
+                        'model_output': {'mode': 'upload', 'path': 'azureml://datastores/workspaceblobstore/paths/dynamic_params/office/train_output', 'type': 'uri_folder'},
+                        'test_data': None
+                },
+                'type': 'command'
+            }
+        )
+        self.assertEqual(
+            result["jobs"]["predict"],
+            {
+                'code': '../src/predict/',
+                'command': 'python predict.py --model_input ${{inputs.model_input}} --test_data ${{inputs.test_data}} --predictions ${{outputs.predictions}}',
+                'compute': 'azureml:demo-compute',
+                'environment': 'azureml:h2o_env:3',
+                'inputs': {
+                    'model_input': '${{parent.jobs.train.outputs.model_output}}',
+                    'test_data': '${{parent.jobs.train.outputs.test_data}}'
+                },
+                'outputs': {'predictions': None},
+                'type': 'command'
+            }
+        )
+
     def test_generating_pipeline_file_wo_value(self):
         logging.info("Test generating pipeline file without value")
         self.generator_no_value.generate()
-        with open(self.pipeline_file , 'r') as file:
+        with open(self.pipeline_no_value_file , 'r') as file:
             result = yaml.safe_load(file)
-        expected = {
-            '$schema': 'https://azuremlschemas.azureedge.net/latest/pipelineJob.schema.json',
-            'type': 'pipeline',
-            'experiment_name': 'ahp_mlops',
-            'inputs': {
-                 'data_config': {
-                    'type': 'uri_file'
-                    },
-                'train_config': {
-                    'type': 'uri_file'
-                    }
-                    },
-            'jobs': {
-                'download_data': {
-                    'code': '../src/download_data/',
-                    'command': 'python download_data.py --data_config ${{inputs.data_config}} --data_folder ${{outputs.data_folder}}',
-                    'compute': 'azureml:demo-compute',
-                    'environment': 'azureml:h2o_env:3',
-                    'inputs': {'data_config': '${{parent.inputs.data_config}}'},
-                    'outputs': {'data_folder': {}},
-                    'type': 'command'
-                    },
-                'data_prep': {
-                    'code': '../src/data_prep/',
-                    'command': 'python data_prep.py --json_folder ${{inputs.json_folder}} --output_folder ${{outputs.output_folder}}',
-                    'compute': 'azureml:demo-compute',
-                    'environment': 'azureml:h2o_env:3',
-                    'inputs': {'json_folder': '${{parent.jobs.download_data.outputs.data_folder}}'},
-                    'outputs': {'output_folder': {}},
-                    'type': 'command'},
-                'train': {
-                    'code': '../src/train/',
-                    'command': 'python train.py --config ${{inputs.config}} --input ${{inputs.input}} --output ${{outputs.output}}',
-                    'compute': 'azureml:demo-compute',
-                    'environment': 'azureml:h2o_env:3',
-                    'inputs': {
-                        'config': '${{parent.inputs.train_config}}',
-                        'input': '${{parent.jobs.data_prep.outputs.output_folder}}'
-                        },
-                    'outputs': {'output': {}},
-                    'type': 'command'}}
-                    }
+
+        self.assertEqual(result["display_name"], "Primitive Training")
+        self.assertEqual(result["experiment_name"], "ahp_mlops")
+        self.assertEqual(
+            result["jobs"]["prep"]["inputs"],
+            {
+                    'data_folder': None,
+                    'some_number': None,
+                    'some_string': None
+            }
+        )
+        self.assertEqual(
+            result["jobs"]["prep"]["outputs"],
+            {
+                'prep_data': None
+            }
+        )
+        self.assertEqual(
+            result["jobs"]["train"]["outputs"]["model_output"],
+            None
+        )
+        
     def test_inputs_file_generation(self):
         self.generator_no_value.generate()
         logging.info("Test generating inputs file ")
 
         with open(self.inputs_file_path , 'r') as file:
             result = yaml.safe_load(file)
-        expected = {
-            "inputs": {
-                "data_config":{
-                    "path": "../src/download_data/config_AF_new.yaml", "type": "uri_file"
-                },
-                "train_config":{
-                     "path": "../src/train/config_GBT.yaml", "type":"uri_file"
-                }
-            }
-        }
-        self.assertEqual(result, expected)
 
+        self.assertEqual(
+            result["inputs"]["data_folder"],
+            {
+                "path": "azureml://datastores/workspaceblobstore/paths/UI/2024-10-06_150541_UTC/office_data/paris",
+                "type": "uri_folder"
+            }
+        )
+        self.assertEqual(result["inputs"]["some_number"], 3)
+        self.assertEqual(result["inputs"]["some_string"], "paris")
+        self.assertEqual(result["outputs"]["prep_data"], {
+            "mode": "upload",
+            "path": "azureml://datastores/workspaceblobstore/paths/dynamic_params/office/prep_data",
+            "type": "uri_folder"
+        })
+        self.assertEqual(result["outputs"]["model_output"], {
+            "mode":"upload",
+            "path": "azureml://datastores/workspaceblobstore/paths/dynamic_params/office/train_output",
+            "type": "uri_folder",
+        })
 if __name__ == "__main__":
     unittest.main()
