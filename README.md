@@ -15,7 +15,7 @@ python3 -m venv VENV
 ```
 
 ```bash
-pip install hexa_mlops --upgrade # upgrade to last version
+pip install hexa-mlops --upgrade # upgrade to last version
 ```
 
 
@@ -85,22 +85,14 @@ inference:
 
 `training.yaml` example
 ```bash
-# Global input
-inputs:
-  - name: data_config
-    type: uri_file
-    path: ./src/download_data/config_yaml
-# Global output
-outputs:
-  - name: data_output
-    type: uri_folder
-    mode: upload
-
 # Jobs within your training pipeline
+run_name: training_example
 steps:
   - name: download_data
     inputs:
-      - data_config: parent.inputs.data_config
+      - data_config: 
+          type: uri_file
+          path: ./src/download_data/config_yaml
      
     outputs:
       - data_folder: 
@@ -109,7 +101,9 @@ steps:
     inputs:
       - json_folder: download_data.outputs.data_folder
     outputs:
-      - output_folder: parent.outputs.data_output
+      - output_folder: 
+          type: uri_folder
+          mode: upload
  
 ```
 ## Outputs

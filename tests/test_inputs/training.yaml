@@ -1,36 +1,37 @@
-inputs:
-  - name: data_config
-    type: uri_file
-    path: ../src/download_data/config_AF_new.yaml
-  - name: train_config
-    type: uri_file
-    path: ../src/train/config_GBT.yaml
-
-steps: # PIPELINE:
-  - name: download_data # step name, same name as the folder name in src
+run_name: Primitive Training
+steps: 
+  - name: prep
     inputs:
-    # data_config: parameter of the py script
-    # parent.inputs.data_config: value of the parameter
-      - data_config: parent.inputs.data_config
-     
-    outputs:
-    # if the folder is not defined, leave the value empty
       - data_folder: 
-
-  - name : data_prep
-    inputs:
-      - json_folder: download_data.outputs.data_folder
+          path: azureml://datastores/workspaceblobstore/paths/UI/2024-10-06_150541_UTC/office_data/paris
+          type: uri_folder
+      - some_number : 3
+      - some_string: "paris"
     outputs:
-      - output_folder: 
-        mode: upload
- 
-    # extra variable like compute, environment, etc (if not define, assume using declared training environment and compute)
+      - prep_data: 
+          path: azureml://datastores/workspaceblobstore/paths/dynamic_params/office/prep_data
+          type: uri_folder
+          mode: upload
+
+  - name: transform
+    inputs: 
+      - clean_data: prep.outputs.prep_data
+    outputs:
+      - transformed_data:
+  
   - name: train
     inputs:
-      - config: parent.inputs.train_config
-      - input: data_prep.outputs.output_folder
+      - training_data: transform.outputs.transformed_data
     outputs:
-      - output:
-
-
+      - model_output: 
+          path: azureml://datastores/workspaceblobstore/paths/dynamic_params/office/train_output
+          type: uri_folder
+          mode: upload
+      - test_data: 
+  - name: predict
+    inputs: 
+      - model_input: train.outputs.model_output
+      - test_data: train.outputs.test_data
+    outputs:
+      - predictions: 
       

@@ -1,7 +1,15 @@
 inputs:
-  data_config:
-    path: ../src/download_data/config_AF_new.yaml
-    type: uri_file
-  train_config:
-    path: ../src/train/config_GBT.yaml
-    type: uri_file
+  data_folder:
+    path: azureml://datastores/workspaceblobstore/paths/UI/2024-10-06_150541_UTC/office_data/paris
+    type: uri_folder
+  some_number: 3
+  some_string: paris
+outputs:
+  model_output:
+    mode: upload
+    path: azureml://datastores/workspaceblobstore/paths/dynamic_params/office/train_output
+    type: uri_folder
+  prep_data:
+    mode: upload
+    path: azureml://datastores/workspaceblobstore/paths/dynamic_params/office/prep_data
+    type: uri_folder
