@@ -359,7 +359,7 @@ class AzBatchDeploymentFileGenerator(FileGenerator):
                         'scoring_script': source_code_values.script_name
                     }),
                     ('environment', environment_value),
-                    ('compute_name', f"azureml:{compute.name}"),
+                    ('compute', f"azureml:{compute.name}"),
                     ('resources', {
                         'instance_count': compute.instance_count
                     }),

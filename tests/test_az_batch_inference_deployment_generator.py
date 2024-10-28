@@ -30,7 +30,7 @@ class TestOnlineDeploymentGenerator(unittest.TestCase):
                         'model': 'azureml:my_dummy_model:1',
                         'code_configuration': {'code': 'TST/scr/score', 'scoring_script': 'score.py'},
                         'environment': 'azureml:h2o_env:3',
-                        'compute_name': 'azureml:dummy',
+                        'compute': 'azureml:dummy',
                         'resources':{'instance_count': 1},
                         'environment_variables': None}
         self.assertEqual(result, expected)
