@@ -57,6 +57,8 @@ TIER = "tier"
 DEFAULT_TIER = "dedicated"
 SUBNET = "subnet"
 DEFAULT_SUBNET = ""
+COMPUTE_USER_ASSIGNED_IDENTITY = "compute_user_assigned_identity"
+DEFAULT_COMPUTE_USER_ASSIGNED_IDENTITY=""
 
 ENVIRONMENT = "environment"
 ENVIRONMENT_NAME = "environment_name"

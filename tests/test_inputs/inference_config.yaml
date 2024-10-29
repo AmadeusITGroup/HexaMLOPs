@@ -9,7 +9,7 @@ tags: ahp_mlops
 inference:  
   compute_name: cluster_ahp
   max_instances: 8
-
+  compute_user_assigned_identity: user_id
   environment_name: h2o_env
   environment_version: 1
   environment_dependencies:

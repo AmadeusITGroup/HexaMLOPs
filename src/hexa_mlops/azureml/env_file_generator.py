@@ -28,7 +28,7 @@ class EnvFileGenerator(FileGenerator):
         super().__init__(config_file_path, output_file_path)
 
     @staticmethod
-    def generate_phase_resouces(phase:str, phase_configs_value:dict, content: dict) -> dict:
+    def generate_phase_resources(phase:str, phase_configs_value:dict, content: dict) -> dict:
         """
         Generate the resources for the training or inference phase
         The configurations for the phase declared in the yaml file will be used, if not found, default values will be used.
@@ -45,6 +45,7 @@ class EnvFileGenerator(FileGenerator):
                 MAX_INSTANCES: DEFAULT_MAX_INSTANCES, 
                 COMPUTE_TYPE: DEFAULT_COMPUTE_TYPE, 
                 VM_SIZE: DEFAULT_VM_SIZE,
+                COMPUTE_USER_ASSIGNED_IDENTITY: DEFAULT_COMPUTE_USER_ASSIGNED_IDENTITY,
                 IDLE_SECONDS_BEFORE_SCALE_DOWN: DEFAULT_IDLE_SECONDS_BEFORE_SCALE_DOWN, 
                 TIER: DEFAULT_TIER,
                 SUBNET: DEFAULT_SUBNET,

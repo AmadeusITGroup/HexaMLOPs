@@ -38,7 +38,7 @@ class TestAzureWorkspaceGenerator(unittest.TestCase):
         
     def test_training_phase(self):
         logging.info("Testing method to generate config if training phase exists")
-        result = EnvFileGenerator.generate_phase_resouces(self.training_phase, self.training_phase_configs, {}) 
+        result = EnvFileGenerator.generate_phase_resources(self.training_phase, self.training_phase_configs, {}) 
         expected = {
             "training_compute_name": "ahp_training",
             "training_min_instances": "1",
@@ -48,6 +48,7 @@ class TestAzureWorkspaceGenerator(unittest.TestCase):
             "training_idle_seconds_before_scale_down": "120",
             "training_tier": "dedicated",
             "training_subnet": "",
+            "training_compute_user_assigned_identity": "",
             "training_environment_name": None,
             "training_environment_version": "3",
             "training_environment_image": "mcr.microsoft.com/azureml/intelmpi2018.3-ubuntu16.04:20200821.v1",
@@ -59,7 +60,7 @@ class TestAzureWorkspaceGenerator(unittest.TestCase):
     
     def test_inference_phase(self):
         logging.info("Testing method to generate config if inference phase exists")
-        result = EnvFileGenerator.generate_phase_resouces(self.inference_phase, self.inference_phase_configs, {})
+        result = EnvFileGenerator.generate_phase_resources(self.inference_phase, self.inference_phase_configs, {})
         expected = {
             "inference_compute_name": "ahp_inference",
             "inference_min_instances": "0",
@@ -69,6 +70,7 @@ class TestAzureWorkspaceGenerator(unittest.TestCase):
             "inference_idle_seconds_before_scale_down": "100",
             "inference_tier": "dedicated",
             "inference_subnet": "",
+            "inference_compute_user_assigned_identity": "",
             "inference_environment_name": None,
             "inference_environment_version": "10",
             "inference_environment_image": "mcr.microsoft.com/azureml/intelmpi2018.3-ubuntu16.04:20200821.v1",
@@ -95,6 +97,7 @@ class TestAzureWorkspaceGenerator(unittest.TestCase):
             "MODEL_TYPE": os.getenv("MODEL_TYPE"),
             "MODEL_PATH": os.getenv("MODEL_PATH"),
             "TRAINING_COMPUTE_NAME": os.getenv("TRAINING_COMPUTE_NAME"),
+            "TRAINING_COMPUTE_USER_ASSIGNED_IDENTITY": os.getenv("TRAINING_COMPUTE_USER_ASSIGNED_IDENTITY"),
             "TRAINING_MIN_INSTANCES": os.getenv("TRAINING_MIN_INSTANCES"),
             "TRAINING_MAX_INSTANCES": os.getenv("TRAINING_MAX_INSTANCES"),
             "TRAINING_COMPUTE_TYPE": os.getenv("TRAINING_COMPUTE_TYPE"),
@@ -117,6 +120,7 @@ class TestAzureWorkspaceGenerator(unittest.TestCase):
             "MODEL_VERSION": "1",
             "MODEL_TYPE": '',
             "MODEL_PATH": './src/mlops_framework/azureml/test/model.pkl',
+            "TRAINING_COMPUTE_USER_ASSIGNED_IDENTITY": "user_id",
             "TRAINING_COMPUTE_NAME": "ahp_mlops",
             "TRAINING_MIN_INSTANCES": "0",
             "TRAINING_MAX_INSTANCES": "8",
@@ -148,6 +152,7 @@ class TestAzureWorkspaceGenerator(unittest.TestCase):
             "INFERENCE_MAX_INSTANCES": os.getenv("INFERENCE_MAX_INSTANCES"),
             "INFERENCE_COMPUTE_TYPE": os.getenv("INFERENCE_COMPUTE_TYPE"),
             "INFERENCE_VM_SIZE": os.getenv("INFERENCE_VM_SIZE"),
+            "INFERENCE_COMPUTE_USER_ASSIGNED_IDENTITY": os.getenv("INFERENCE_COMPUTE_USER_ASSIGNED_IDENTITY"),
             "INFERENCE_IDLE_SECONDS_BEFORE_SCALE_DOWN": os.getenv("INFERENCE_IDLE_SECONDS_BEFORE_SCALE_DOWN"),
             "INFERENCE_TIER": os.getenv("INFERENCE_TIER"),
             "INFERENCE_SUBNET": os.getenv("INFERENCE_SUBNET"),
@@ -166,6 +171,7 @@ class TestAzureWorkspaceGenerator(unittest.TestCase):
             "INFERENCE_MAX_INSTANCES": "8",
             "INFERENCE_COMPUTE_TYPE": "amlcompute",
             "INFERENCE_VM_SIZE": "STANDARD_D13_V2",
+            "INFERENCE_COMPUTE_USER_ASSIGNED_IDENTITY": "user_id",
             "INFERENCE_IDLE_SECONDS_BEFORE_SCALE_DOWN": "120",
             "INFERENCE_TIER": "dedicated",
             "INFERENCE_SUBNET": "",
@@ -197,6 +203,7 @@ class TestAzureWorkspaceGenerator(unittest.TestCase):
             "TRAINING_ENVIRONMENT_NAME": os.getenv("TRAINING_ENVIRONMENT_NAME"),
             "TRAINING_ENVIRONMENT_VERSION": os.getenv("TRAINING_ENVIRONMENT_VERSION"),
             "TRAINING_ENVIRONMENT_IMAGE": os.getenv("TRAINING_ENVIRONMENT_IMAGE"),
+            "TRAINING_COMPUTE_USER_ASSIGNED_IDENTITY": os.getenv("TRAINING_COMPUTE_USER_ASSIGNED_IDENTITY"),
             "INFERENCE_COMPUTE_NAME": os.getenv("INFERENCE_COMPUTE_NAME"),
             "INFERENCE_MIN_INSTANCES": os.getenv("INFERENCE_MIN_INSTANCES"),
             "INFERENCE_MAX_INSTANCES": os.getenv("INFERENCE_MAX_INSTANCES"),
@@ -207,7 +214,8 @@ class TestAzureWorkspaceGenerator(unittest.TestCase):
             "INFERENCE_SUBNET": os.getenv("INFERENCE_SUBNET"),
             "INFERENCE_ENVIRONMENT_NAME": os.getenv("INFERENCE_ENVIRONMENT_NAME"),
             "INFERENCE_ENVIRONMENT_VERSION": os.getenv("INFERENCE_ENVIRONMENT_VERSION"),
-            "INFERENCE_ENVIRONMENT_IMAGE": os.getenv("INFERENCE_ENVIRONMENT_IMAGE")
+            "INFERENCE_ENVIRONMENT_IMAGE": os.getenv("INFERENCE_ENVIRONMENT_IMAGE"),
+            "INFERENCE_COMPUTE_USER_ASSIGNED_IDENTITY": os.getenv("INFERENCE_COMPUTE_USER_ASSIGNED_IDENTITY")
 
         }
         expected = {
@@ -227,6 +235,7 @@ class TestAzureWorkspaceGenerator(unittest.TestCase):
             "TRAINING_ENVIRONMENT_NAME": "ahp_mlops",
             "TRAINING_ENVIRONMENT_VERSION": "3",
             "TRAINING_ENVIRONMENT_IMAGE": "mcr.microsoft.com/azureml/intelmpi2018.3-ubuntu16.04:20200821.v1",
+            "TRAINING_COMPUTE_USER_ASSIGNED_IDENTITY": "",
             "INFERENCE_COMPUTE_NAME": "cluster_drift14",
             "INFERENCE_MIN_INSTANCES": "0",
             "INFERENCE_MAX_INSTANCES": "2",
@@ -238,6 +247,7 @@ class TestAzureWorkspaceGenerator(unittest.TestCase):
             "INFERENCE_ENVIRONMENT_NAME": "h2o_env",
             "INFERENCE_ENVIRONMENT_VERSION": "latest",
             "INFERENCE_ENVIRONMENT_IMAGE": "mcr.microsoft.com/azureml/intelmpi2018.3-ubuntu16.04:20200821.v1",
+            "INFERENCE_COMPUTE_USER_ASSIGNED_IDENTITY":""
         }
         self.assertTrue(result, expected)
 

@@ -11,9 +11,9 @@ model_version: 1
 model_path: ./src/mlops_framework/azureml/test/model.pkl
 
 training:  
-  #compute_name: cluster-drift14 
+  
   max_instances: 8
-
+  compute_user_assigned_identity: user_id
   #environment_name: h2o_env
   environment_version: 3
   environment_dependencies:
