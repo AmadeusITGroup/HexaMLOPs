@@ -108,7 +108,7 @@ class EnvFileGenerator(FileGenerator):
                 INFERENCE_PHASE: data.get(INFERENCE_PHASE, {})
             }
             for phase, phase_configs_value in phase_configs.items():
-                content = self.generate_phase_resouces(phase, phase_configs_value, content)
+                content = self.generate_phase_resources(phase, phase_configs_value, content)
             
             # Write the content to the .env file
             self.write_file(content, self.output_file_path)
