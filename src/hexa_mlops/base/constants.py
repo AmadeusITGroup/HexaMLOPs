@@ -84,6 +84,7 @@ BATCH_PIPELINE_COMPONENT_SCHEMA = "https://azuremlschemas.azureedge.net/latest/p
 PIPELINE_JOB_SCHEMA = "https://azuremlschemas.azureedge.net/latest/pipelineJob.schema.json"
 MANAGED_ONLINE_INFERENCE_SCHEMA = "https://azuremlschemas.azureedge.net/latest/managedOnlineDeployment.schema.json"
 MANAGED_BATCH_INFERENCE_SCHEMA = "https://azuremlschemas.azureedge.net/latest/batchDeployment.schema.json"
+DATALAKE_ZEN_2_DATASTORE_SCHEMA = "https://azuremlschemas.azureedge.net/latest/azureDataLakeGen2.schema.json"
 
 # AZURE ML DEPLOYMNENT
 
@@ -128,3 +129,15 @@ LIVENESS_PROBE_FAILURE_THRESHOLD = "liveness_probe_failure_threshold"
 READINESS_PROBE_FAILURE_THRESHOLD = "readiness_probe_failure_threshold"
 LIVENESS_PROBE_SUCCESS_THRESHOLD = "liveness_probe_success_threshold"
 READINESS_PROBE_SUCCESS_THRESHOLD = "readiness_probe_success_threshold"
+
+## Datastore
+DATASTORE_NAME = "datastore_name"
+STORAGE_ACCOUNT_NAME = "storage_account_name"
+FILE_SYSTEM_NAME = "file_system_name"
+DATA_ENDPOINT = "endpoint"
+PROTOCOL = "protocol"
+TENANT_ID = "tenant_id"
+CLIENT_ID = "client_id"
+AZURE_DATALAKE_GEN2 = "azure_data_lake_gen2"
+HTTPS = "https" 
+ABFSS = "abfss"

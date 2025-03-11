@@ -10,6 +10,7 @@ from hexa_mlops.azureml.azure_pipeline_file_generator import AzPipelineFileGener
 from hexa_mlops.azureml.azure_training_batch_deployment_file_generator import AzTrainingBatchDeploymentFileGenerator
 from hexa_mlops.azureml.env_file_generator import EnvFileGenerator
 from hexa_mlops.azureml.conda_file_generator import CondaFileGenerator
+from hexa_mlops.azureml.azure_datastore_register_generator import AzDatastoreRegisterFileGenerator
 
 class TestCli(unittest.TestCase):
     @patch('sys.argv', ['hexa','az','online_deployment', 'generate', 'test_inputs/online_inference_config.yaml', 'test_outputs/online_inference_deployment.yaml'])
@@ -38,6 +39,12 @@ class TestCli(unittest.TestCase):
     
     @patch('sys.argv', ['hexa','az', 'training_batch_deployment', 'generate', 'test_inputs/training_config.yaml', 'test_outputs/batch_training_deployment.yaml'])
     @patch.object(AzTrainingBatchDeploymentFileGenerator, 'generate')
+    def test_az_training_batch_deployment_cli(self, mock_generate):
+        main()
+        mock_generate.assert_called_once()
+
+    @patch('sys.argv', ['hexa','az', 'datastore_register', 'generate', 'test_inputs/datastore_config.yaml', 'test_outputs/datastore.yaml'])
+    @patch.object(AzDatastoreRegisterFileGenerator, 'generate')
     def test_az_training_batch_deployment_cli(self, mock_generate):
         main()
         mock_generate.assert_called_once()

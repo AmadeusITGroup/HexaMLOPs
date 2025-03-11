@@ -1,0 +1,11 @@
+datastore_name: test_datastore ## required
+description: register test storage as datalake gen2 with service principle
+tags: data:test
+storage_account_name: mlops_input_storage ## required
+file_system_name: mlops_data_container ## required
+tenant_id: 12345 #required
+client_id: dummy_client #required
+
+
+
+

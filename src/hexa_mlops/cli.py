@@ -5,6 +5,7 @@ from .azureml.azure_pipeline_file_generator import AzPipelineFileGenerator
 from .azureml.azure_training_batch_deployment_file_generator import AzTrainingBatchDeploymentFileGenerator
 from .azureml.env_file_generator import EnvFileGenerator
 from .azureml.conda_file_generator import CondaFileGenerator
+from .azureml.azure_datastore_register_generator import AzDatastoreRegisterFileGenerator
 
 def add_generate_subparser(parser):
     subparser = parser.add_subparsers(dest='action', help='Choose action') 
@@ -47,6 +48,10 @@ def main():
     az_training_batch_parser = az_subparsers.add_parser('training_batch_deployment', help='Azure Training Batch Deployment file')
     add_generate_subparser(az_training_batch_parser)
 
+    # AZ Datastore Register Generator
+    az_datastore_register_parser = az_subparsers.add_parser('datastore_register', help='Azure Datastore Registry file')
+    add_generate_subparser(az_datastore_register_parser)
+
     # Env Generator
     env_parser = general_subparsers.add_parser('env', help='Environment file generator')
     add_generate_subparser(env_parser)
@@ -73,6 +78,8 @@ def main():
             generator = AzPipelineFileGenerator(args.input, args.output, args.input_training_file, args.output_inputs_file, pipeline_with_value=False)
         elif args.file_type == 'training_batch_deployment': # and args.file_type == 'generate' and args.input and args.output:
             generator = AzTrainingBatchDeploymentFileGenerator(args.input, args.output)
+        elif args.file_type == 'datastore_register':
+            generator = AzDatastoreRegisterFileGenerator(args.input, args.output)
         else:
             parser.print_help()
         generator.generate()
