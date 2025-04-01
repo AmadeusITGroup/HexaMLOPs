@@ -1,0 +1,7 @@
+$schema: https://azuremlschemas.azureedge.net/latest/data.schema.json
+type: uri_file
+name: test_data_asset
+description: Register test dataset as a data asset
+tags: dataset:test
+path: azureml://datastores/test_datastore/paths/mlops_data/my_data.csv
+version: 1

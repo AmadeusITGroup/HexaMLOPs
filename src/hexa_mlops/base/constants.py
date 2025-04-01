@@ -85,6 +85,7 @@ PIPELINE_JOB_SCHEMA = "https://azuremlschemas.azureedge.net/latest/pipelineJob.s
 MANAGED_ONLINE_INFERENCE_SCHEMA = "https://azuremlschemas.azureedge.net/latest/managedOnlineDeployment.schema.json"
 MANAGED_BATCH_INFERENCE_SCHEMA = "https://azuremlschemas.azureedge.net/latest/batchDeployment.schema.json"
 DATALAKE_ZEN_2_DATASTORE_SCHEMA = "https://azuremlschemas.azureedge.net/latest/azureDataLakeGen2.schema.json"
+DATA_ASSET_SCHEMA="https://azuremlschemas.azureedge.net/latest/data.schema.json"
 
 # AZURE ML DEPLOYMNENT
 
@@ -110,7 +111,7 @@ TIMEOUT = "timeout"
 OUTPUT_ACTION = "output_action"
 OUTPUT_FILE_NAME = "output_file_name"
 
-# AZURE ML Online Inference 
+# AZURE ML Online Inference
 DOCKER_FILE_PATH = "docker_file_path"
 EGRESS_PUBLIC_NETWORK_ACCESS_DEFAULT = "disabled"
 INSTANCE_TYPE = "instance_type"
@@ -139,5 +140,5 @@ PROTOCOL = "protocol"
 TENANT_ID = "tenant_id"
 CLIENT_ID = "client_id"
 AZURE_DATALAKE_GEN2 = "azure_data_lake_gen2"
-HTTPS = "https" 
+HTTPS = "https"
 ABFSS = "abfss"
