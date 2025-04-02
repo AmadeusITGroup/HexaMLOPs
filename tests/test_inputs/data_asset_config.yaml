@@ -1,0 +1,6 @@
+data_asset_name: test_data_asset  # Required
+description: Register test dataset as a data asset
+tags: dataset:test
+type: uri_file  # or uri_folder
+path: mlops_data/my_data.csv  # Required
+version: 1
