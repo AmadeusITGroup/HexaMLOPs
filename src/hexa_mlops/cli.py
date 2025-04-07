@@ -5,6 +5,7 @@ from .azureml.azure_pipeline_file_generator import AzPipelineFileGenerator
 from .azureml.azure_training_batch_deployment_file_generator import AzTrainingBatchDeploymentFileGenerator
 from .azureml.env_file_generator import EnvFileGenerator
 from .azureml.conda_file_generator import CondaFileGenerator
+from .acs.ml_deploy_helm_value_generator import MLDeploymentHelmValueGenerator
 
 def add_generate_subparser(parser):
     subparser = parser.add_subparsers(dest='action', help='Choose action') 
@@ -20,9 +21,13 @@ def main():
      # az sub-command
     az_parser = subparsers.add_parser('az', description='Azure Generator')
     az_subparsers = az_parser.add_subparsers(dest='file_type', help='Choose an Azure generator')
-   # general sub-command
+    # general sub-command
     general_parser = subparsers.add_parser('general', description='General Generator')
     general_subparsers = general_parser.add_subparsers(dest='file_type', help='Choose a general generator')
+
+    # k8s sub-command
+    helm_parser = subparsers.add_parser('helm', description='Helm Chart Generator')
+    helm_subparsers = helm_parser.add_subparsers(dest='file_type', help='Choose a helm chart generator' )
 
     # AZ Online Inference Deployment Generator
     az_online_deployment_parser = az_subparsers.add_parser('online_deployment', help='Azure Online Inference Deployment file')
@@ -59,6 +64,13 @@ def main():
     inference_conda_parser = general_subparsers.add_parser('inference_conda', help='Conda environment file generator')
     add_generate_subparser(inference_conda_parser)
 
+    # Helm Generator for ML Deployment helm value
+    ml_deployment_helm_parser = helm_subparsers.add_parser('online_deployment_helm_value', help='Helm value for ML online deployment file generator')
+    ml_deployment_helm_subparser = add_generate_subparser(ml_deployment_helm_parser)
+    ml_deployment_helm_subparser.add_argument('phase', type=str, help='Deployment Phase')
+    ml_deployment_helm_subparser.add_argument('model_config_file', type=str, help='Path to model configuration file')
+
+
     args = parser.parse_args()
     print(f"Parsed arguments: {args}")
 
@@ -83,6 +95,12 @@ def main():
             generator = CondaFileGenerator(args.input, args.output, is_training_phase=True)
         elif args.file_type == 'inference_conda':
             generator = CondaFileGenerator(args.input, args.output, is_training_phase=False)
+        else:
+            parser.print_help()
+        generator.generate()
+    elif args.engine_type == 'helm' and args.action == "generate" and args.input and args.output:
+        if args.file_type == 'online_deployment_helm_value':
+            generator = MLDeploymentHelmValueGenerator(args.input, args.output, args.phase, args.model_config_file)
         else:
             parser.print_help()
         generator.generate()

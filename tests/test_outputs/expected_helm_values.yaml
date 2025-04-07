@@ -1,0 +1,162 @@
+containerName: blob_container_x
+labels:
+  app.kubernetes.io/component: hexaml
+  app.kubernetes.io/environment: tst
+  app.kubernetes.io/instance: hexaml
+  app.kubernetes.io/part-of: SOS
+  app.kubernetes.io/version: '1.0'
+models:
+  model-1:
+    cpu: '0.1'
+    envVars:
+      INSTANCES: '1'
+      VERBOSITY: INFO
+    image: docker.xxx.dockerhub.net/docker-helm/docker-helm/common_env:2
+    labels: &id001
+      prometheus.io/scrape-triton-inference-server: 'true'
+    maxReplicas: 2
+    memory: 1Gi
+    metricsPort: 8002
+    minReplicas: 2
+    monitoring_input: "{\n    \"inputs\": [\n        {\n            \"name\": \"m1_geo\"\
+      ,\n            \"shape\": [3, 1],\n            \"datatype\": \"BYTES\",\n  \
+      \          \"data\": [\"InterContinental\", \"Domestic\", \"Continental\"]\n\
+      \        },\n        {\"name\": \"m1_adv\", \"shape\": [3, 1], \"datatype\"\
+      : \"FP32\", \"data\": [1, 4, 10]},\n        {\"name\": \"m1_stay\", \"shape\"\
+      : [3, 1], \"datatype\": \"FP32\", \"data\": [11, 9, 10]},\n        {\n     \
+      \       \"name\": \"m1_number_of_connections\",\n            \"shape\": [3,\
+      \ 1],\n            \"datatype\": \"FP32\",\n            \"data\": [5, 3, 0]\n\
+      \        },\n        {\"name\": \"m1_eft\", \"shape\": [3, 1], \"datatype\"\
+      : \"FP32\", \"data\": [83, 227, 98]},\n        {\n            \"name\": \"m1_distance\"\
+      ,\n            \"shape\": [3, 1],\n            \"datatype\": \"FP32\",\n   \
+      \         \"data\": [2122, 3296, 2364]\n        },\n        {\n            \"\
+      name\": \"m1_BASE_price\",\n            \"shape\": [3, 1],\n            \"datatype\"\
+      : \"FP32\",\n            \"data\": [249, 485, 956]\n        },\n        {\n\
+      \            \"name\": \"m1_dep_dow\",\n            \"shape\": [3, 1],\n   \
+      \         \"datatype\": \"BYTES\",\n            \"data\": [\"Thursday\", \"\
+      Thursday\", \"Wednesday\"]\n        },\n        {\n            \"name\": \"\
+      m1_ret_dow\",\n            \"shape\": [3, 1],\n            \"datatype\": \"\
+      BYTES\",\n            \"data\": [\"Sunday\", \"Sunday\", \"Thursday\"]\n   \
+      \     },\n        {\n            \"name\": \"m1_days_to_return\",\n        \
+      \    \"shape\": [3, 1],\n            \"datatype\": \"FP32\",\n            \"\
+      data\": [16, 22, 1]\n        },\n        {\n            \"name\": \"m1_distance_1\"\
+      ,\n            \"shape\": [3, 1],\n            \"datatype\": \"FP32\",\n   \
+      \         \"data\": [518, 585, 219]\n        },\n        {\n            \"name\"\
+      : \"m1_eft_1\",\n            \"shape\": [3, 1],\n            \"datatype\": \"\
+      FP32\",\n            \"data\": [118, 83, 30]\n        },\n        {\n      \
+      \      \"name\": \"m1_BASE_farebasis_1\",\n            \"shape\": [3, 1],\n\
+      \            \"datatype\": \"BYTES\",\n            \"data\": [\"B\", \"M\",\
+      \ \"M\"]\n        },\n        {\n            \"name\": \"m1_distance_2\",\n\
+      \            \"shape\": [3, 1],\n            \"datatype\": \"FP32\",\n     \
+      \       \"data\": [208, 415, 208]\n        },\n        {\n            \"name\"\
+      : \"m1_eft_2\",\n            \"shape\": [3, 1],\n            \"datatype\": \"\
+      FP32\",\n            \"data\": [121, 40, 147]\n        },\n        {\n     \
+      \       \"name\": \"m1_BASE_farebasis_2\",\n            \"shape\": [3, 1],\n\
+      \            \"datatype\": \"BYTES\",\n            \"data\": [\"B\", \"B\",\
+      \ \"B\"]\n        },\n        {\n            \"name\": \"m1_distance_3\",\n\
+      \            \"shape\": [3, 1],\n            \"datatype\": \"FP32\",\n     \
+      \       \"data\": [768, 326, 198]\n        },\n        {\"name\": \"m1_eft_3\"\
+      , \"shape\": [3, 1], \"datatype\": \"FP32\", \"data\": [48, 94, 33]},\n    \
+      \    {\n            \"name\": \"m1_BASE_farebasis_3\",\n            \"shape\"\
+      : [3, 1],\n            \"datatype\": \"BYTES\",\n            \"data\": [\"B\"\
+      , \"Y\", \"Y\"]\n        },\n        {\n            \"name\": \"m1_distance_4\"\
+      ,\n            \"shape\": [3, 1],\n            \"datatype\": \"FP32\",\n   \
+      \         \"data\": [327, 680, 375]\n        },\n        {\n            \"name\"\
+      : \"m1_eft_4\",\n            \"shape\": [3, 1],\n            \"datatype\": \"\
+      FP32\",\n            \"data\": [103, 48, 125]\n        },\n        {\n     \
+      \       \"name\": \"m1_BASE_farebasis_4\",\n            \"shape\": [3, 1],\n\
+      \            \"datatype\": \"BYTES\",\n            \"data\": [\"M\", \"M\",\
+      \ \"Y\"]\n        }\n    ],\n    \"outputs\": [{\"name\": \"m2_variable\"}]\n\
+      }"
+    name: model-1
+    port: 8000
+    readinessPath: /v2/health/ready
+    readinessPort: 8000
+    targetCPU: 80
+    versions: 1 2
+    versions_details:
+    - percentage: 50.0
+      version: 1
+      version_path: /v2/models/model-1/versions/1/infer
+    - percentage: 50.0
+      version: 2
+      version_path: /v2/models/model-1/versions/2/infer
+  model-2:
+    cpu: '0.1'
+    envVars:
+      INSTANCES: '1'
+      VERBOSITY: INFO
+    image: docker.xxx.dockerhub.net/docker-helm/docker-helm/custom_env_2:6
+    labels: *id001
+    maxReplicas: 1
+    memory: 1Gi
+    metricsPort: 8002
+    minReplicas: 1
+    monitoring_input: "{\n    \"inputs\": [\n        {\n            \"name\": \"m1_geo\"\
+      ,\n            \"shape\": [3, 1],\n            \"datatype\": \"BYTES\",\n  \
+      \          \"data\": [\"InterContinental\", \"Domestic\", \"Continental\"]\n\
+      \        },\n        {\"name\": \"m1_adv\", \"shape\": [3, 1], \"datatype\"\
+      : \"FP32\", \"data\": [1, 4, 10]},\n        {\"name\": \"m1_stay\", \"shape\"\
+      : [3, 1], \"datatype\": \"FP32\", \"data\": [11, 9, 10]},\n        {\n     \
+      \       \"name\": \"m1_number_of_connections\",\n            \"shape\": [3,\
+      \ 1],\n            \"datatype\": \"FP32\",\n            \"data\": [5, 3, 0]\n\
+      \        },\n        {\"name\": \"m1_eft\", \"shape\": [3, 1], \"datatype\"\
+      : \"FP32\", \"data\": [83, 227, 98]},\n        {\n            \"name\": \"m1_distance\"\
+      ,\n            \"shape\": [3, 1],\n            \"datatype\": \"FP32\",\n   \
+      \         \"data\": [2122, 3296, 2364]\n        },\n        {\n            \"\
+      name\": \"m1_BASE_price\",\n            \"shape\": [3, 1],\n            \"datatype\"\
+      : \"FP32\",\n            \"data\": [249, 485, 956]\n        },\n        {\n\
+      \            \"name\": \"m1_dep_dow\",\n            \"shape\": [3, 1],\n   \
+      \         \"datatype\": \"BYTES\",\n            \"data\": [\"Thursday\", \"\
+      Thursday\", \"Wednesday\"]\n        },\n        {\n            \"name\": \"\
+      m1_ret_dow\",\n            \"shape\": [3, 1],\n            \"datatype\": \"\
+      BYTES\",\n            \"data\": [\"Sunday\", \"Sunday\", \"Thursday\"]\n   \
+      \     },\n        {\n            \"name\": \"m1_days_to_return\",\n        \
+      \    \"shape\": [3, 1],\n            \"datatype\": \"FP32\",\n            \"\
+      data\": [16, 22, 1]\n        },\n        {\n            \"name\": \"m1_distance_1\"\
+      ,\n            \"shape\": [3, 1],\n            \"datatype\": \"FP32\",\n   \
+      \         \"data\": [518, 585, 219]\n        },\n        {\n            \"name\"\
+      : \"m1_eft_1\",\n            \"shape\": [3, 1],\n            \"datatype\": \"\
+      FP32\",\n            \"data\": [118, 83, 30]\n        },\n        {\n      \
+      \      \"name\": \"m1_BASE_farebasis_1\",\n            \"shape\": [3, 1],\n\
+      \            \"datatype\": \"BYTES\",\n            \"data\": [\"B\", \"M\",\
+      \ \"M\"]\n        },\n        {\n            \"name\": \"m1_distance_2\",\n\
+      \            \"shape\": [3, 1],\n            \"datatype\": \"FP32\",\n     \
+      \       \"data\": [208, 415, 208]\n        },\n        {\n            \"name\"\
+      : \"m1_eft_2\",\n            \"shape\": [3, 1],\n            \"datatype\": \"\
+      FP32\",\n            \"data\": [121, 40, 147]\n        },\n        {\n     \
+      \       \"name\": \"m1_BASE_farebasis_2\",\n            \"shape\": [3, 1],\n\
+      \            \"datatype\": \"BYTES\",\n            \"data\": [\"B\", \"B\",\
+      \ \"B\"]\n        },\n        {\n            \"name\": \"m1_distance_3\",\n\
+      \            \"shape\": [3, 1],\n            \"datatype\": \"FP32\",\n     \
+      \       \"data\": [768, 326, 198]\n        },\n        {\"name\": \"m1_eft_3\"\
+      , \"shape\": [3, 1], \"datatype\": \"FP32\", \"data\": [48, 94, 33]},\n    \
+      \    {\n            \"name\": \"m1_BASE_farebasis_3\",\n            \"shape\"\
+      : [3, 1],\n            \"datatype\": \"BYTES\",\n            \"data\": [\"B\"\
+      , \"Y\", \"Y\"]\n        },\n        {\n            \"name\": \"m1_distance_4\"\
+      ,\n            \"shape\": [3, 1],\n            \"datatype\": \"FP32\",\n   \
+      \         \"data\": [327, 680, 375]\n        },\n        {\n            \"name\"\
+      : \"m1_eft_4\",\n            \"shape\": [3, 1],\n            \"datatype\": \"\
+      FP32\",\n            \"data\": [103, 48, 125]\n        },\n        {\n     \
+      \       \"name\": \"m1_BASE_farebasis_4\",\n            \"shape\": [3, 1],\n\
+      \            \"datatype\": \"BYTES\",\n            \"data\": [\"M\", \"M\",\
+      \ \"Y\"]\n        }\n    ],\n    \"outputs\": [{\"name\": \"m2_variable\"}]\n\
+      }"
+    name: model-2
+    port: 8000
+    readinessPath: /v2/health/ready
+    readinessPort: 8000
+    targetCPU: 80
+    versions: 3 2
+    versions_details:
+    - percentage: 66.66666666666666
+      version: 3
+      version_path: /v2/models/model-2/versions/3/infer
+    - percentage: 33.33333333333333
+      version: 2
+      version_path: /v2/models/model-2/versions/2/infer
+reverse_proxy:
+  cpu: '0.1'
+  image: repository/docker/docker/nginx-124:9.5-1737483922
+  memory: 256Mi
+  replicas: 2
