@@ -1,0 +1,117 @@
+{
+    "inputs": [
+        {
+            "name": "m1_geo",
+            "shape": [3, 1],
+            "datatype": "BYTES",
+            "data": ["InterContinental", "Domestic", "Continental"]
+        },
+        {"name": "m1_adv", "shape": [3, 1], "datatype": "FP32", "data": [1, 4, 10]},
+        {"name": "m1_stay", "shape": [3, 1], "datatype": "FP32", "data": [11, 9, 10]},
+        {
+            "name": "m1_number_of_connections",
+            "shape": [3, 1],
+            "datatype": "FP32",
+            "data": [5, 3, 0]
+        },
+        {"name": "m1_eft", "shape": [3, 1], "datatype": "FP32", "data": [83, 227, 98]},
+        {
+            "name": "m1_distance",
+            "shape": [3, 1],
+            "datatype": "FP32",
+            "data": [2122, 3296, 2364]
+        },
+        {
+            "name": "m1_BASE_price",
+            "shape": [3, 1],
+            "datatype": "FP32",
+            "data": [249, 485, 956]
+        },
+        {
+            "name": "m1_dep_dow",
+            "shape": [3, 1],
+            "datatype": "BYTES",
+            "data": ["Thursday", "Thursday", "Wednesday"]
+        },
+        {
+            "name": "m1_ret_dow",
+            "shape": [3, 1],
+            "datatype": "BYTES",
+            "data": ["Sunday", "Sunday", "Thursday"]
+        },
+        {
+            "name": "m1_days_to_return",
+            "shape": [3, 1],
+            "datatype": "FP32",
+            "data": [16, 22, 1]
+        },
+        {
+            "name": "m1_distance_1",
+            "shape": [3, 1],
+            "datatype": "FP32",
+            "data": [518, 585, 219]
+        },
+        {
+            "name": "m1_eft_1",
+            "shape": [3, 1],
+            "datatype": "FP32",
+            "data": [118, 83, 30]
+        },
+        {
+            "name": "m1_BASE_farebasis_1",
+            "shape": [3, 1],
+            "datatype": "BYTES",
+            "data": ["B", "M", "M"]
+        },
+        {
+            "name": "m1_distance_2",
+            "shape": [3, 1],
+            "datatype": "FP32",
+            "data": [208, 415, 208]
+        },
+        {
+            "name": "m1_eft_2",
+            "shape": [3, 1],
+            "datatype": "FP32",
+            "data": [121, 40, 147]
+        },
+        {
+            "name": "m1_BASE_farebasis_2",
+            "shape": [3, 1],
+            "datatype": "BYTES",
+            "data": ["B", "B", "B"]
+        },
+        {
+            "name": "m1_distance_3",
+            "shape": [3, 1],
+            "datatype": "FP32",
+            "data": [768, 326, 198]
+        },
+        {"name": "m1_eft_3", "shape": [3, 1], "datatype": "FP32", "data": [48, 94, 33]},
+        {
+            "name": "m1_BASE_farebasis_3",
+            "shape": [3, 1],
+            "datatype": "BYTES",
+            "data": ["B", "Y", "Y"]
+        },
+        {
+            "name": "m1_distance_4",
+            "shape": [3, 1],
+            "datatype": "FP32",
+            "data": [327, 680, 375]
+        },
+        {
+            "name": "m1_eft_4",
+            "shape": [3, 1],
+            "datatype": "FP32",
+            "data": [103, 48, 125]
+        },
+        {
+            "name": "m1_BASE_farebasis_4",
+            "shape": [3, 1],
+            "datatype": "BYTES",
+            "data": ["M", "M", "Y"]
+        }
+    ],
+    "outputs": [{"name": "m2_variable"}]
+}

@@ -1,1 +1,5 @@
 **/__pycache__/
+build/
+dist/
+src/hexa_mlops.egg-info
+.pytest_cache

@@ -1,0 +1,55 @@
+- name: model-1
+  environment:
+    name: common_env
+    version: 2
+  parameters: []
+  versions:
+  - version: 1
+    weight: 100    
+  - version: 2
+    weight: 100    
+  clusters:
+  - phase: tst
+    deploy:
+      max_replicas: 2
+      min_replicas: 2
+      target_cpu: 80 
+      memory: "1Gi"
+      cpu: "0.1"
+      env_vars:
+        INSTANCES: "1"
+        VERBOSITY: "INFO"
+  monitoring_input_path: "monitoring-inputs.yaml"
+
+- name: model-2
+  environment:
+    name: custom_env_2
+    version: 6
+  parameters: []
+  versions:
+  - version: 3
+    weight: 100    
+  - version: 2
+    weight: 50    
+  clusters:
+  - phase: stg
+    deploy:
+      max_replicas: 1
+      min_replicas: 1
+      target_cpu: 80 
+      memory: "1Gi"
+      cpu: "0.1"
+      env_vars:
+        INSTANCES: "1"
+        VERBOSITY: "INFO"
+  - phase: tst
+    deploy:
+      max_replicas: 1
+      min_replicas: 1
+      target_cpu: 80 
+      memory: "1Gi"
+      cpu: "0.1"
+      env_vars:
+        INSTANCES: "1"
+        VERBOSITY: "INFO"
+  monitoring_input_path: "monitoring-inputs.yaml"

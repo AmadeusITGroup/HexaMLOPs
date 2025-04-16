@@ -1,0 +1,63 @@
+model_storage: blob_container_x
+labels:
+  app.kubernetes.io/part-of: SOS
+  app.kubernetes.io/instance: hexaml
+  app.kubernetes.io/component: hexaml
+  app.kubernetes.io/version: "1.0"
+phases:
+- name: tst
+  cluster: tst-cluster
+  namespace: hexaml-tst
+  docker: docker_2
+  docker_helm: docker_3
+  reverse_proxy:
+    replicas: 2
+    image: repository/docker/docker/nginx-124:9.5-1737483922
+    memory: 256Mi
+    cpu: '0.1'
+  labels:
+    app.kubernetes.io/environment: tst
+environments:
+# Common envs
+- name: common_env
+  version: 2
+  dockerfile: environments/triton/common/Dockerfile
+  model_version_path: /v2/models/{{ model }}/versions/{{ version }}/infer
+  port: 8000
+  metrics_port: 8002
+  readiness_path: /v2/health/ready
+  readiness_port: 8000
+  build_args:
+    parent_env_version: 'custom-triton-nogpu-py-onnx-24.12:3'
+    specific_path: environments/triton/custom-24.12-onnx-py
+  labels:
+    prometheus.io/scrape-triton-inference-server: 'true'
+# No blob envs = model is packaged with the image
+- name: custom_env_1
+  parent_environment: common_env
+  version: 1
+  dockerfile: environments/triton/common-noblob/Dockerfile
+  build_args:
+    parent_env_version: 'custom-triton-nogpu-py-onnx-24.12:3'
+    specific_path: environments/triton/custom_env_2
+- name: custom_env_2
+  parent_environment: common_env
+  version: 6
+  dockerfile: environments/triton/common-noblob/Dockerfile
+  build_args:
+    parent_env_version: 'custom-triton-nogpu-py-onnx-24.12:3'
+    specific_path: environments/triton/custom_env_2
+
+docker: 
+- name: docker_1
+  registry: localhost:5000
+  namespace: some-test-namespace
+  repository: inference-platform 
+- name: docker_2
+  registry: docker.xxx.dockerhub.net
+  namespace: my-namespace
+  repository: docker-image
+- name: docker_3
+  registry:  docker.xxx.dockerhub.net
+  namespace: docker-helm
+  repository: docker-helm

@@ -13,6 +13,7 @@ from hexa_mlops.azureml.conda_file_generator import CondaFileGenerator
 from hexa_mlops.azureml.azure_datastore_register_generator import AzDatastoreRegisterFileGenerator
 from hexa_mlops.azureml.azure_data_asset_register_generator import AzDataAssetRegisterFileGenerator
 
+from hexa_mlops.acs.ml_deploy_helm_value_generator import MLDeploymentHelmValueGenerator
 
 class TestCli(unittest.TestCase):
     @patch('sys.argv', ['hexa','az','online_deployment', 'generate', 'test_inputs/online_inference_config.yaml', 'test_outputs/online_inference_deployment.yaml'])
@@ -72,6 +73,12 @@ class TestCli(unittest.TestCase):
     @patch('sys.argv', ['hexa','general', 'inference_conda', 'generate', 'test_inputs/inference_config.yaml', 'test_outputs/inference_conda.yaml'])
     @patch.object(CondaFileGenerator, 'generate')
     def test_conda_generation(self, mock_generate):
+        main()
+        mock_generate.assert_called_once()
+    
+    @patch('sys.argv', ['hexa','helm', 'online_deployment_helm_value', 'generate', 'test_inputs/helm_common_config.yaml', 'test_outputs/generated_helm_values.yaml', 'tst', 'test_inputs/helm_model_config.yaml'])
+    @patch.object(MLDeploymentHelmValueGenerator, 'generate')
+    def test_helm_ml_deployment_generation(self, mock_generate):
         main()
         mock_generate.assert_called_once()
 
