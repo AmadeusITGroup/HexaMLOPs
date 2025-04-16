@@ -15,6 +15,7 @@ setup(
     install_requires=[
         'pyyaml',
         'python-dotenv',
+        'Jinja2',
     ],
     entry_points={
         'console_scripts': [
