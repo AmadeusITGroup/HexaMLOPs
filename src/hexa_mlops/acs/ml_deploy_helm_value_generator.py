@@ -127,7 +127,7 @@ class MLDeploymentHelmValueGenerator(FileGenerator):
                     monitoring_input_path=model_config.get("monitoring_input_path")
                 )
 
-                model_config_lst.append(model_info)
+                    model_config_lst.append(model_info)
             return model_config_lst
 
         except FileNotFoundError as e:
